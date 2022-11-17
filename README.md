@@ -7,11 +7,21 @@ Func that call Update events at a specific time
 
 기능 
 
-1. 업데이트를 중앙에서 관리
-2. 업데이트할 대상에 대한 시간을 조종
-
+1. 업데이트를 매니저에서 관리
+2. 업데이트할 대상에 대한 시간을 제어
 
 주 모듈
+
+1. TimerModuleManager : 업데이트를 중앙에서 관리해줄 매니저 클래스
+
+2. TimerModule_Base : 타이머모듈들을 베이스 클래스
+
+3. UnityEventTimerModule_Base : 유니티이벤트를 사용하는 모듈들의 베이스 클래스
+
+
+
+
+주로 사용하실 모듈
 
 1. UpdateTimerModule_Base : 상속받아서 업데이트를 작동할수 있도록 해주는 클래스
 
