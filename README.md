@@ -27,7 +27,9 @@ Func that call Update events at a specific time
 
 2. UpdateTimerModule : 유니티이벤트에 등록하여 업데이트를 작동할수 있도록 해주는 클래스
 
-3. CoolTimerModule : 쿨타이머. 특정 시간까지 작동안되게 타이머가 돌아가며 그것에 대한 UI까지 제공. (UpdateTimerModule_Base를 상속받아서 작동되는 클래스)
+3. CoolTimerModule : 쿨타이머. 특정 시간까지 작동안되게 타이머가 돌아가며 그것에 대한 UI까지 제공.
+시작시 이벤트, 쿨타임찰시 이벤트 제공. (UpdateTimerModule_Base를 상속받아서 작동되는 클래스)
+
 
 
 https://user-images.githubusercontent.com/44671731/202400614-1bc45307-426b-4cfd-9273-c7efabec8331.mp4
