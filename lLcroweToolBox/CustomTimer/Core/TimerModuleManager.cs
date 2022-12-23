@@ -55,6 +55,7 @@ namespace lLCroweTool.TimerSystem
         [Tooltip("업데이트모듈이 들어간 오브젝트들")]////모노비헤이비어 상속받은 모듈
         //업데이트모듈
         public List<TimerModule_Base> updateTimerModuleBaseList = new List<TimerModule_Base>();
+        public TimerModule_Base[] updateTimerModuleBaseArray = new TimerModule_Base[0];
 
         //코루틴모듈//MEC로 처리하는중//중앙에서 체크하여 작동됫는지 확인용도//작동은 다른곳에서 됨
         public List<TimerModule_Base> coroutineTimerModuleList = new List<TimerModule_Base>();
@@ -159,6 +160,7 @@ namespace lLCroweTool.TimerSystem
                     if (!updateTimerModuleBaseList.Contains(timerModule))
                     {
                         updateTimerModuleBaseList.Add(timerModule);
+                        updateTimerModuleBaseArray = updateTimerModuleBaseList.ToArray();
                         normalTimerModuleAmount++;
                     }
                     break;
@@ -166,6 +168,7 @@ namespace lLCroweTool.TimerSystem
                     if (!updateTimerModuleBaseList.Contains(timerModule))
                     {
                         updateTimerModuleBaseList.Add(timerModule);
+                        updateTimerModuleBaseArray = updateTimerModuleBaseList.ToArray();
                         unityEventTimerModuleAmount++;
                     }
                     break;
@@ -199,6 +202,7 @@ namespace lLCroweTool.TimerSystem
                     if (updateTimerModuleBaseList.Contains(timerModule))
                     {
                         updateTimerModuleBaseList.Remove(timerModule);
+                        updateTimerModuleBaseArray = updateTimerModuleBaseList.ToArray();
                         normalTimerModuleAmount--;
                     }
                     break;
@@ -206,6 +210,7 @@ namespace lLCroweTool.TimerSystem
                     if (updateTimerModuleBaseList.Contains(timerModule))
                     {
                         updateTimerModuleBaseList.Remove(timerModule);
+                        updateTimerModuleBaseArray = updateTimerModuleBaseList.ToArray();
                         unityEventTimerModuleAmount--;
                     }
                     break;
@@ -235,9 +240,9 @@ namespace lLCroweTool.TimerSystem
             //업데이트 타이머모듈베이스(모노비헤이비어)
             Profiler.BeginSample("UpdateTimerModule");
             TimerModule_Base timerModule_Base = null;
-            for (int i = 0; i < updateTimerModuleBaseList.Count; i++)
+            for (int i = 0; i < updateTimerModuleBaseArray.Length; i++)
             {
-                timerModule_Base = updateTimerModuleBaseList[i];
+                timerModule_Base = updateTimerModuleBaseArray[i];
                 //게임오브젝트, 스크립트가 비활성화상태이면 중지
                 if (!timerModule_Base.isActiveAndEnabled)
                 {
