@@ -19,7 +19,6 @@ namespace lLCroweTool.TimerSystem
         public bool indieTimer = false;
 
         //기존의 돌아가는 타이머
-        [HideInInspector][SerializeField]
         private float time = -1;
 
 
