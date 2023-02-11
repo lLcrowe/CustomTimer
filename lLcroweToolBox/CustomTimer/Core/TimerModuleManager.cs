@@ -377,7 +377,7 @@ namespace lLCroweTool.TimerSystem
         /// <param name="time">저장된 시간</param>
         /// <param name="indieTimer">독립된 타이머여부</param>
         /// <returns>작동할 시간이 됫는지 여부</returns>
-        private bool CheckTimer(float timer, float time, bool indieTimer)
+        public bool CheckTimer(float timer, float time, bool indieTimer)
         {
             //20221113제작//공통로직 합동
             //20221114테스트진행 GC문제있음
