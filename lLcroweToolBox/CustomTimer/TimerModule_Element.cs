@@ -6,19 +6,26 @@ namespace lLCroweTool.TimerSystem
     /// 타이머모듈 요소
     /// </summary>
     [System.Serializable]
-    public class TimerModule_Element
+    public struct TimerModule_Element
     {
         //컴포넌트식이 아닌 요소로 붙착시킴
         [Header("-=1. 몇초마다 이벤트를 발생할것인가.")]
         //몇초에 리셋될건지 해주는 타이머
-        [SerializeField] protected float timer = 0;//작동될 타이머 : 0.02~ 0.05 정도
+        [SerializeField] private float timer;//작동될 타이머 : 0.02~ 0.05 정도
 
         [Header("-=2. 독립적인 타이머인가?")]
         //월드타이머와 별개로 돌아간건지
-        public bool indieTimer = false;
+        public bool indieTimer;
 
         //기존의 돌아가는 타이머
-        private float time = -1;
+        private float time;
+
+        public TimerModule_Element(float timer, bool indieTimer = false)
+        {
+            this.timer = timer;
+            this.indieTimer = indieTimer;
+            time = -1;
+        }
 
         /// <summary>
         /// 타이머모듈의 타이머체크
