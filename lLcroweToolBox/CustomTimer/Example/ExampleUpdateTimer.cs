@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using lLCroweTool.TimerSystem;
 
-namespace lLCroweTool.TimerSystem
+namespace lLCroweTool.TimerSystem.Sample
 {
     public class ExampleUpdateTimer : UpdateTimerModule_Base
     {

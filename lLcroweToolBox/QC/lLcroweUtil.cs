@@ -8,7 +8,7 @@ namespace lLCroweTool
         /// 유니티이벤트를 체크하여 없으면 집어넣는 함수
         /// </summary>
         /// <param name="unityEvent">유니티이벤트</param>
-        public static void GetAddUnitEvent(UnityEvent unityEvent)
+        public static void GetAddUnitEvent(ref UnityEvent unityEvent)
         {
             //if (unityEvent == null)
             if (ReferenceEquals(unityEvent, null))

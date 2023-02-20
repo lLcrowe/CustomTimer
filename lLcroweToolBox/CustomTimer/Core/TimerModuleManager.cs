@@ -250,7 +250,7 @@ namespace lLCroweTool.TimerSystem
                 }
 
                 //시간체크
-                if (!CheckTimer(timerModule_Base.GetTimer(), timerModule_Base.GetTime(), timerModule_Base.indieTimer))
+                if (!CheckTimer(timerModule_Base.timerModule_Element))
                 {
                     continue;
                 }
@@ -373,21 +373,20 @@ namespace lLCroweTool.TimerSystem
         /// <summary>
         /// 작동할 시간이 됫는지 체크해주는 함수
         /// </summary>
-        /// <param name="timer">지정된 타이머</param>
-        /// <param name="time">저장된 시간</param>
-        /// <param name="indieTimer">독립된 타이머여부</param>
+        ///<param name="timerModule_Element">타이머모듈_요소</param>
         /// <returns>작동할 시간이 됫는지 여부</returns>
-        public bool CheckTimer(float timer, float time, bool indieTimer)
+        public bool CheckTimer(TimerModule_Element timerModule_Element)
         {
             //20221113제작//공통로직 합동
             //20221114테스트진행 GC문제있음
             //202216문제는 Action같은 Delegate문제. 여긴상관없음
+            //20230220데이터부분을 분리
             if (isPause)
             {
                 return false;
             }
 
-            timerValue = CalTimerValue(timer, time, indieTimer, GetUpdateTimerScale());
+            timerValue = CalTimerValue(timerModule_Element.GetTimer(), timerModule_Element.GetTime(), timerModule_Element.indieTimer, GetUpdateTimerScale());
 
             return Time.time > timerValue;
         }

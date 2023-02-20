@@ -10,21 +10,7 @@ namespace lLCroweTool.TimerSystem
         //20221116
         //구조변경//통합완료
 
-        [Header("-=1. 몇초마다 이벤트를 발생할것인가.")]
-        //몇초에 리셋될건지 해주는 타이머
-        [SerializeField] protected float timer = 0;//작동될 타이머 : 0.02~ 0.05 정도
-
-        [Header("-=2. 독립적인 타이머인가?")]
-        //월드타이머와 별개로 돌아간건지
-        public bool indieTimer = false;
-
-        //기존의 돌아가는 타이머
-        private float time = -1;
-
-
-        ////컴포넌트를 켯을시
-        //RequireComponent 컴포넌트사용시 해당 컴포넌트 오브젝트가 만들어지자마자
-        //onenable이 작동이 되버림//코드활성화시 체크할것
+        public TimerModule_Element timerModule_Element;
 
         /// <summary>
         /// 타임모듈매니저에 현 클래스를 등록하는 함수//앱작동시
@@ -43,14 +29,14 @@ namespace lLCroweTool.TimerSystem
 
         protected virtual void Awake()
         {
-            if (time == -1)
+            if (timerModule_Element.GetTime() == -1)
             {
                 ResetTime();
                 //time = Time.time;
             }
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             if (!Application.isPlaying)
             {
@@ -60,7 +46,7 @@ namespace lLCroweTool.TimerSystem
             ConnectTimerModuleManager();
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             if (!Application.isPlaying)
             {
@@ -77,7 +63,7 @@ namespace lLCroweTool.TimerSystem
         /// <param name="value">시간</param>
         public void SetTimer(float value)
         {
-            timer = value;
+            timerModule_Element.SetTimer(value);
         }
 
         /// <summary>
@@ -86,7 +72,7 @@ namespace lLCroweTool.TimerSystem
         /// <returns>세팅된 타이머</returns>
         public float GetTimer()
         {
-            return timer;
+            return timerModule_Element.GetTimer();
         }
 
         /// <summary>
@@ -95,7 +81,7 @@ namespace lLCroweTool.TimerSystem
         /// <returns></returns>
         public float GetTime()
         {
-            return time;
+            return timerModule_Element.GetTime();
         }
 
         /// <summary>
@@ -103,7 +89,7 @@ namespace lLCroweTool.TimerSystem
         /// </summary>
         public void ResetTime()
         {
-            time = Time.time;
+            timerModule_Element.ResetTime();
         }
 
 #if UNITY_EDITOR
@@ -114,6 +100,6 @@ namespace lLCroweTool.TimerSystem
         {
             Debug.Log(gameObject.name + " : 타이머이벤트가 호출되었습니다.");
         }
- #endif
+#endif
     }
 }

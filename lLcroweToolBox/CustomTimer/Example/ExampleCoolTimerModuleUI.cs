@@ -1,17 +1,16 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using lLCroweTool.TimerSystem;
 
-namespace Assets
+namespace lLCroweTool.TimerSystem.Sample
 {
-    public class SampleCoolTimerModuleUI : MonoBehaviour
+    public class ExampleCoolTimerModuleUI : MonoBehaviour
     {
         public CoolTimerModule coolTimer;
 
         public CoolTimerModuleUI coolTimerModuleUI;
         private void Start()
         {
-            coolTimerModuleUI.SetCoolTimerModuleUI(coolTimer);
+            coolTimerModuleUI.SetCoolTimerModuleUI(coolTimer.coolTimerModule);
         }
 
         public void StartDebug()

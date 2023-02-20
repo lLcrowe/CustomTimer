@@ -18,7 +18,7 @@ namespace lLCroweTool.TimerSystem
         protected sealed override void Awake()
         {
             base.Awake();
-            lLcroweUtil.GetAddUnitEvent(unityEvent);
+            lLcroweUtil.GetAddUnitEvent(ref unityEvent);
         }
 
         /// <summary>

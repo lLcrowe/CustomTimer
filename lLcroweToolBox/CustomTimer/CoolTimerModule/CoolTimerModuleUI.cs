@@ -12,7 +12,7 @@ namespace lLCroweTool.TimerSystem
     public class CoolTimerModuleUI : MonoBehaviour, IPointerClickHandler
     {
         private bool isExistCoolTimer = false;
-        private CoolTimerModule targetCoolTimer;//타겟이될 쿨타임
+        private CoolTimerModule_Element targetCoolTimer;//타겟이될 쿨타임
         private Button CoolTimerButton;//버튼가져오기<--자신
         
         //수동으로 기입
@@ -93,7 +93,7 @@ namespace lLCroweTool.TimerSystem
         /// 쿨타이머내용을 보여주기 위해 쿨타이머UI에 세팅해주는 함수
         /// </summary>
         /// <param name="_coolTimerModule">타겟이 될 쿨타이머 모듈</param>
-        public void SetCoolTimerModuleUI(CoolTimerModule _coolTimerModule)
+        public void SetCoolTimerModuleUI(CoolTimerModule_Element _coolTimerModule)
         {
             targetCoolTimer = _coolTimerModule;
             if (ReferenceEquals(targetCoolTimer, null))

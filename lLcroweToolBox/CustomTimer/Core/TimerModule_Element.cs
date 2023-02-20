@@ -34,7 +34,7 @@ namespace lLCroweTool.TimerSystem
         public bool CheckTimer()
         {
             //시간체크
-            bool check = TimerModuleManager.Instance.CheckTimer(GetTimer(), GetTime(), indieTimer);//작동할시간이 됫는지 여부
+            bool check = TimerModuleManager.Instance.CheckTimer(this);//작동할시간이 됫는지 여부
             if (check)
             {
                 ResetTime();//타이머시간 리셋
