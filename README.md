@@ -35,6 +35,8 @@ Func that call Update events at a specific time
 
 5. CoolTimerModule_Element : 컴포넌트 방식이 아닌 객체의 특정요소로 있는 쿨타이머기능을 제공하는 
 
+### 필요없을시 삭제 : Example, Temp_MergeAndDelete
+
 https://user-images.githubusercontent.com/44671731/202400614-1bc45307-426b-4cfd-9273-c7efabec8331.mp4
 
 
