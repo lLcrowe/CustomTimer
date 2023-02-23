@@ -56,7 +56,12 @@ namespace lLCroweTool.TimerSystem
             SetTimer(0.05f);
         }
 
-        public override void UpdateTimerModuleFunc()
+        public sealed override void UpdateTimerModuleFunc()
+        {
+            UpdateCoolTimerModuleUI();
+        }
+
+        protected virtual void UpdateCoolTimerModuleUI()
         {
             if (isExistCoolTimer)
             {
@@ -114,6 +119,14 @@ namespace lLCroweTool.TimerSystem
         {
             coolTimerButton.onClick.RemoveAllListeners();
             coolTimerButton.onClick.AddListener(unityAction);
+        }
+
+        /// <summary>
+        /// 버튼클릭
+        /// </summary>
+        public void ButtonInvoke()
+        {
+            coolTimerButton.onClick.Invoke();
         }
 
 
