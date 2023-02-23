@@ -1,25 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using TMPro;
 using UnityEngine.EventSystems;
 
 
 namespace lLCroweTool.TimerSystem
 {
     [RequireComponent(typeof(Button))]
-    [RequireComponent(typeof(UpdateTimerModule))]
-    public class CoolTimerModuleUI : MonoBehaviour, IPointerClickHandler
+    public class CoolTimerModuleUI : UpdateTimerModule_Base, IPointerClickHandler
     {
         private bool isExistCoolTimer = false;
         private CoolTimerModule_Element targetCoolTimer;//타겟이될 쿨타임
-        private Button CoolTimerButton;//버튼가져오기<--자신
+        private Button coolTimerButton;//버튼가져오기<--자신
         
         //수동으로 기입
-        public Image skillFillUI;//스킬이미지위에 검은 타이머<--자식    
-        public Image skillRepeatIcon;//스킬반복을 했을시 동작함<--자식
-
-        private UpdateTimerModule timerModule;
+        public Image coolTimerFillUI;//스킬이미지위에 검은 타이머<--자식    
+        public Image coolTimerRepeatIcon;//스킬반복을 했을시 동작함<--자식
 
         //public override void CreateObjectInitSetting()
         //{
@@ -51,23 +47,22 @@ namespace lLCroweTool.TimerSystem
         //    skillRepeatIcon.color = color;
         //}
 
-        protected void Awake()
-        { 
-            CoolTimerButton = GetComponent<Button>();
+        protected override void Awake()
+        {
+            base.Awake();
+            coolTimerButton = GetComponent<Button>();
 
             //UI표시 업데이트
-            timerModule = GetComponent<UpdateTimerModule>();
-            timerModule.SetTimer(0.05f);
-            timerModule.AddUnityEvent(UpdateCoolTimerModuleUI);
+            SetTimer(0.05f);
         }
 
-        protected virtual void UpdateCoolTimerModuleUI()
+        public override void UpdateTimerModuleFunc()
         {
             if (isExistCoolTimer)
             {
-                if (skillFillUI.fillAmount != targetCoolTimer.GetTimeValue())
+                if (coolTimerFillUI.fillAmount != targetCoolTimer.GetTimeValue())
                 {
-                    skillFillUI.fillAmount = targetCoolTimer.GetTimeValue();
+                    coolTimerFillUI.fillAmount = targetCoolTimer.GetTimeValue();
                 }
             }
         }
@@ -80,7 +75,7 @@ namespace lLCroweTool.TimerSystem
                 if (targetCoolTimer.isUseRepeat)
                 {
                     targetCoolTimer.isRepeat = !targetCoolTimer.isRepeat;
-                    skillRepeatIcon.enabled = targetCoolTimer.isRepeat;
+                    coolTimerRepeatIcon.enabled = targetCoolTimer.isRepeat;
                     if (targetCoolTimer.GetEnableSkill())
                     {   
                         targetCoolTimer.StartSkill();
@@ -99,15 +94,15 @@ namespace lLCroweTool.TimerSystem
             if (ReferenceEquals(targetCoolTimer, null))
             {
                 isExistCoolTimer = false;
-                skillRepeatIcon.enabled = false;
+                coolTimerRepeatIcon.enabled = false;
                 Debug.Log("타겟이 될 쿨타이머가 비어있습니다.");
             }
             else
             {
                 isExistCoolTimer = true;
-                skillRepeatIcon.enabled = targetCoolTimer.isRepeat;
+                coolTimerRepeatIcon.enabled = targetCoolTimer.isRepeat;
                 SetButtonEvent(delegate { targetCoolTimer.StartSkill(); });
-                skillFillUI.fillAmount = targetCoolTimer.GetTimeValue();
+                coolTimerFillUI.fillAmount = targetCoolTimer.GetTimeValue();
             }
         }
 
@@ -117,18 +112,17 @@ namespace lLCroweTool.TimerSystem
         /// <param name="unityAction">유니티액션</param>
         public void SetButtonEvent(UnityAction unityAction)
         {
-            CoolTimerButton.onClick.RemoveAllListeners();
-            CoolTimerButton.onClick.AddListener(unityAction);
+            coolTimerButton.onClick.RemoveAllListeners();
+            coolTimerButton.onClick.AddListener(unityAction);
         }
 
 
         protected void OnDestroy()
         {
             targetCoolTimer = null;
-            CoolTimerButton = null;
-            skillFillUI = null;
-            skillRepeatIcon = null;
-            timerModule = null;
+            coolTimerButton = null;
+            coolTimerFillUI = null;
+            coolTimerRepeatIcon = null;
         }
     }
 }

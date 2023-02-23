@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-//using MEC;
+using MEC;
 //using lLCroweTool.LogSystem;
 using lLCroweTool.Singleton;
 using UnityEngine.Profiling;
@@ -60,13 +60,13 @@ namespace lLCroweTool.TimerSystem
         //코루틴모듈//MEC로 처리하는중//중앙에서 체크하여 작동됫는지 확인용도//작동은 다른곳에서 됨
         public List<TimerModule_Base> coroutineTimerModuleList = new List<TimerModule_Base>();
 
-        //private CoroutineHandle updateHandle;
+        private CoroutineHandle updateHandle;
         private static float timerValue;
 
         protected override void Awake()
         {
             base.Awake();
-            //updateHandle = Timing.RunCoroutine(UpdateTimerModuleFunc());//MEC
+            updateHandle = Timing.RunCoroutine(UpdateTimerModuleFunc());//MEC
         }
 
         private void LateUpdate()
@@ -261,82 +261,82 @@ namespace lLCroweTool.TimerSystem
             Profiler.EndSample();
         }
 
-        private void Update()
+        //private void Update()
+        //{
+        //    //유니티업데이트
+        //    UpdateTimerModuleManager();
+        //}
+
+        /// <summary>
+        /// MEC로 호출하는 업데이트 함수//MEC
+        /// </summary>
+        private IEnumerator<float> UpdateTimerModuleFunc()//MEC
         {
-            //유니티업데이트
-            UpdateTimerModuleManager();
+            //유니티 업데이트 대신 돌리기 위한 구역
+            //테스트
+            for (; ; )
+            {
+                UpdateTimerModuleManager();
+                yield return Timing.WaitForOneFrame;
+            }
         }
 
-        ///// <summary>
-        ///// MEC로 호출하는 업데이트 함수//MEC
-        ///// </summary>
-        //private IEnumerator<float> UpdateTimerModuleFunc()//MEC
-        //{
-        //    //유니티 업데이트 대신 돌리기 위한 구역
-        //    //테스트
-        //    for (; ; )
-        //    {
-        //        UpdateTimerModuleManager();
-        //        yield return Timing.WaitForOneFrame;
-        //    }
-        //}
+        /// <summary>
+        /// 타이머모듈들을 공통로직 함수(모노코루틴용)//MEC
+        /// </summary>
+        /// <param name="coroutineTimerModule">코루틴타이머모듈</param>
+        /// <param name="timer">지정된 타이머</param>
+        public IEnumerator<float> UpdateTimerModuleFunc(CoroutineTimerModule coroutineTimerModule)//MEC
+        {
+            //20221113새로제작
+            //20221114테스트진행 GC문제없음
+            //20221116구조변경 코루틴은 코루틴쓰는 대상에서 처리
 
-        ///// <summary>
-        ///// 타이머모듈들을 공통로직 함수(모노코루틴용)//MEC
-        ///// </summary>
-        ///// <param name="coroutineTimerModule">코루틴타이머모듈</param>
-        ///// <param name="timer">지정된 타이머</param>
-        //public IEnumerator<float> UpdateTimerModuleFunc(CoroutineTimerModule coroutineTimerModule)//MEC
-        //{
-        //    //20221113새로제작
-        //    //20221114테스트진행 GC문제없음
-        //    //20221116구조변경 코루틴은 코루틴쓰는 대상에서 처리
+            for (; ; )
+            {
+                if (!coroutineTimerModule.isActiveAndEnabled)
+                {
+                    continue;//문제있을거 같은데 모름
+                }
 
-        //    for (; ; )
-        //    {
-        //        if (!coroutineTimerModule.isActiveAndEnabled)
-        //        {
-        //            continue;//문제있을거 같은데 모름
-        //        }
+                //Profiler.BeginSample("CoroutineTimerModule");
+                coroutineTimerModule.UpdateTimerModuleFunc();//유니티이벤트32B//액션은 얼마나 쌓일까
+                //Profiler.EndSample();
+                //yield return Timing.WaitForSeconds(timer / WorldTimer.Instance.timerScale);
+                //yield return Timing.WaitForSeconds(coroutineTimerModule.GetTimer() / (Mathf.Round(GetUpdateTimerScale() * 100) / 100));//뭔가 이상하다 체크해볼것
+                //yield return Timing.WaitForSeconds(corotineTimerData.GetTimer() / ((GetUpdateTimerScale() * 100f) * 0.01f));//20220701변경
+                yield return Timing.WaitForSeconds(coroutineTimerModule.GetTimer() / GetUpdateTimerScale());//20221113변경//원래이거였네
+            }
+        }
 
-        //        //Profiler.BeginSample("CoroutineTimerModule");
-        //        coroutineTimerModule.UpdateTimerModuleFunc();//유니티이벤트32B//액션은 얼마나 쌓일까
-        //        //Profiler.EndSample();
-        //        //yield return Timing.WaitForSeconds(timer / WorldTimer.Instance.timerScale);
-        //        //yield return Timing.WaitForSeconds(coroutineTimerModule.GetTimer() / (Mathf.Round(GetUpdateTimerScale() * 100) / 100));//뭔가 이상하다 체크해볼것
-        //        //yield return Timing.WaitForSeconds(corotineTimerData.GetTimer() / ((GetUpdateTimerScale() * 100f) * 0.01f));//20220701변경
-        //        yield return Timing.WaitForSeconds(coroutineTimerModule.GetTimer() / GetUpdateTimerScale());//20221113변경//원래이거였네
-        //    }
-        //}
+        /// <summary>
+        /// 타이머모듈들을 공통로직 함수(모노코루틴용)//MEC
+        /// </summary>
+        /// <param name="coroutineTimerModule">코루틴타이머모듈</param>
+        /// <param name="timer">지정된 타이머</param>
+        public IEnumerator<float> UpdateTimerModuleFunc(CoroutineTimerModule_Base coroutineTimerModule_Base)
+        {
+            //20221113새로제작
+            //20221114테스트진행 GC문제없음
+            //20221116구조변경 코루틴은 코루틴쓰는 대상에서 처리
 
-        ///// <summary>
-        ///// 타이머모듈들을 공통로직 함수(모노코루틴용)//MEC
-        ///// </summary>
-        ///// <param name="coroutineTimerModule">코루틴타이머모듈</param>
-        ///// <param name="timer">지정된 타이머</param>
-        //public IEnumerator<float> UpdateTimerModuleFunc(CoroutineTimerModule_Base coroutineTimerModule_Base)
-        //{
-        //    //20221113새로제작
-        //    //20221114테스트진행 GC문제없음
-        //    //20221116구조변경 코루틴은 코루틴쓰는 대상에서 처리
-
-        //    for (; ; )
-        //    {
-        //        //Profiler.BeginSample("CoroutineTimerModule_Base");
-        //        coroutineTimerModule_Base.UpdateTimerModuleFunc();
-        //        //Profiler.EndSample();
-        //        //yield return Timing.WaitForSeconds(timer / WorldTimer.Instance.timerScale);
-        //        //yield return Timing.WaitForSeconds(coroutineTimerModule.GetTimer() / (Mathf.Round(GetUpdateTimerScale() * 100) / 100));//뭔가 이상하다 체크해볼것
-        //        //yield return Timing.WaitForSeconds(corotineTimerData.GetTimer() / ((GetUpdateTimerScale() * 100f) * 0.01f));//20220701변경
-        //        yield return Timing.WaitForSeconds(coroutineTimerModule_Base.GetTimer() / GetUpdateTimerScale());//20221113변경//원래이거였네
-        //    }
-        //}
+            for (; ; )
+            {
+                //Profiler.BeginSample("CoroutineTimerModule_Base");
+                coroutineTimerModule_Base.UpdateTimerModuleFunc();
+                //Profiler.EndSample();
+                //yield return Timing.WaitForSeconds(timer / WorldTimer.Instance.timerScale);
+                //yield return Timing.WaitForSeconds(coroutineTimerModule.GetTimer() / (Mathf.Round(GetUpdateTimerScale() * 100) / 100));//뭔가 이상하다 체크해볼것
+                //yield return Timing.WaitForSeconds(corotineTimerData.GetTimer() / ((GetUpdateTimerScale() * 100f) * 0.01f));//20220701변경
+                yield return Timing.WaitForSeconds(coroutineTimerModule_Base.GetTimer() / GetUpdateTimerScale());//20221113변경//원래이거였네
+            }
+        }
 
         //===================================================================        
         //===================================================================
 
         ///// <summary>
-        ///// 타이머모듈들을 공통로직 함수(일반용)
+        ///// 타이머모듈들을 공통로직 함수(일반용)//사용중지
         ///// </summary>
         ///// <param name="updateAction">업데이트 행동</param>
         ///// <param name="ResetTimeAction">시간초기화 행동</param>
@@ -405,10 +405,15 @@ namespace lLCroweTool.TimerSystem
             return tempValue;
         }
 
+        private void OnApplicationQuit()
+        {
+            Timing.KillCoroutines(updateHandle);
+        }
+
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            updateTimerModuleBaseList.Clear();            
+            updateTimerModuleBaseList.Clear();
             coroutineTimerModuleList.Clear();
         }
     }
@@ -426,4 +431,44 @@ namespace lLCroweTool.TimerSystem
         Coroutine,
         CoroutineEvent,
     }
+
+    //20221011
+
+    //-=기록
+    //탐색시간을 별개로 하기위한 구조를 변경할 예정
+    //탐색 주기
+    //스투가 유닛당 0.0625초임
+    //유닛 몇백이 0.0625 주기로 탐색하는데도 렉 그다지 안걸리자너
+    //탐색에 의해서 행동이 실행되지
+    //무기 사거리 동작 반응 트리거 반응
+    //이런게 다 0.0625초
+    //=>
+    //고로 현재 타이머모듈외에도 따로 등록하는 타이머구조를 만들어서
+    //등록되게하는것도 좋아보임
+
+    //-=새로생각
+    //등록은 OK그럼 대상의 작동은 어찌?
+    //이클래스에 시간을 체크하여 다른클래스에서 확인후 작업?
+    //아니면 이클래스에 작동될걸 등록후에 매니저에서 중앙처리?
+    //아니면 기존의 타이머모듈에서 추가적인 타이머들을 제공하여 처리할수 있게?
+    //확인해봣더니 감지되었을때 탐지해서 처리해버림
+    //그럼 감지의 메뉴얼시간을 건드리면 되는거 아닌가
+    //그럼 현재이슈는 유보
+
+    //20221116
+    //상속으로 하는 방법과 유니티이벤트같은 함수를 이벤트로 넣어줘서 쓰는 방식이 있는데
+    //둘다 장단점이 있다. 그중에서 GC가 잘 안쌓이게 상속으로 처리하는 방법을 채택
+    //필요에 따라 해당 밑에 클래스들을 상속받아서 오브젝트주소와 업데이트기능만 클래스에
+    //정의후에 사용하면 됨
+
+
+    //20230212
+    //따로 빼버려서 상속안받고 모듈로 처리할수 있게
+    //특정요소들을 UpdateElement로 빼버림(데이터추출)
+    //20230215
+    //성능체크후 변경
+    //updateElement를 Class->Struct로 처리
+    //20230220
+    //따로 빼버려서 상속안받고 모듈로 처리할수 있게 처라
+    //특정요소들을 CoolTimer_Element로 빼버림(데이터,로직추출)
 }
