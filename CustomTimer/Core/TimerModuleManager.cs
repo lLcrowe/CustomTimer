@@ -268,7 +268,7 @@ namespace lLCroweTool.TimerSystem
         }
 
         ///// <summary>
-        ///// MEC로 호출하는 업데이트 함수
+        ///// MEC로 호출하는 업데이트 함수//MEC
         ///// </summary>
         //private IEnumerator<float> UpdateTimerModuleFunc()//MEC
         //{
@@ -286,7 +286,7 @@ namespace lLCroweTool.TimerSystem
         ///// </summary>
         ///// <param name="coroutineTimerModule">코루틴타이머모듈</param>
         ///// <param name="timer">지정된 타이머</param>
-        //public IEnumerator<float> UpdateTimerModuleFunc(CoroutineTimerModule coroutineTimerModule)
+        //public IEnumerator<float> UpdateTimerModuleFunc(CoroutineTimerModule coroutineTimerModule)//MEC
         //{
         //    //20221113새로제작
         //    //20221114테스트진행 GC문제없음
