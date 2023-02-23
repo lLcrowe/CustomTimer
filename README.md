@@ -38,6 +38,6 @@ Func that call Update events at a specific time
 https://user-images.githubusercontent.com/44671731/202400614-1bc45307-426b-4cfd-9273-c7efabec8331.mp4
 
 
-필요시 확장에셋(코드첨부. Extend폴더 확인할것)
+필요시 확장에셋(코드첨부. Extend폴더 확인할것, TimerModuleManager의 //MEC 주석처리된 부분 풀기)
 
 -MEC(More Effective Corotine) https://assetstore.unity.com/packages/tools/animation/more-effective-coroutines-pro-68480
