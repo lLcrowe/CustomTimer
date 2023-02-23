@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace lLCroweTool.TimerSystem
 {   
-    public class SkillSlotUISlotCard : SlotUICard_Base
+    public class SkillSlotUICard : SlotUICard_Base
     {
         //스킬슬롯을 실시간으로 바꾸기위한 기능을 가짐//컴포넌트형식
 
@@ -16,9 +16,27 @@ namespace lLCroweTool.TimerSystem
         //현클래스에 기능조합중관련해서 분리
         //플레이어스킬툴바UI뷰와 체크
 
-        //이컴포넌트는 원래 스킬슬롯UI를 상속받았음//구조체크하기
+        //이컴포넌트는 원래 스킬슬롯UI이였고 CoolTimerUI를 상속받았음
+        //구조체크하기
 
-        private SkillSlotUI targetSkillSlotUI;//타겟이될 스킬슬롯UI
+        //신규구조
+        //신버전) MonoBehavior => SlotUICard_Base => SkillSlotUISlotCard 
+        //신버전) MonoBehavior => UpdateBase => CoolTimerUI => SkillSlotUI(완)
+
+
+
+
+        //구버전) MonoBehavior => SlotUICard_Base => CoolTimerUI => SkillSlotUI
+       
+
+        //제대로 쓸려면 데이터를 집어넣어줘야될듯한데
+        //따로 함수들을 뽑아버림
+        //몇가지 기능 체크후 스왑기능 구현하자
+
+
+
+
+        private SkillSlotUI targetSkillSlotUI;//타겟이될 스킬슬롯UI//양방향성을 가짐//조심히 쓸것
 
         protected override void Awake()
         {
@@ -29,6 +47,24 @@ namespace lLCroweTool.TimerSystem
             slotType = SlotType.SkillSlotUI;
         }
 
+        /// <summary>
+        /// 스킬슬롯스택 보여주는 함수
+        /// </summary>
+        /// <param name="cashStackAmount">스택수량</param>
+        public void ShowSkillSlotStack(int cashStackAmount)
+        {
+            countTextObject.text = cashStackAmount.ToString();
+        }
+
+        /// <summary>
+        /// 텍스트오브젝트 활성화기능관련 함수
+        /// </summary>
+        /// <param name="isShow">보여줄지</param>
+        public void ActiveTextObject(bool isShow)
+        {
+            countTextObject.gameObject.SetActive(isShow);
+            countImageObject.gameObject.SetActive(isShow);
+        }
         protected override void BeginDragAddOnActionFunc()
         {
             //SkillSlotUI가져감
