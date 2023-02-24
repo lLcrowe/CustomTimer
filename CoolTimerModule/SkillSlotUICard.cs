@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace lLCroweTool.TimerSystem
 {   
-    public class SkillSlotUICard : SlotUICard_Base
+    public class SkillSlotUICard : SlotUICard
     {
         //스킬슬롯을 실시간으로 바꾸기위한 기능을 가짐//컴포넌트형식
 
@@ -27,16 +27,35 @@ namespace lLCroweTool.TimerSystem
 
 
         //구버전) MonoBehavior => SlotUICard_Base => CoolTimerUI => SkillSlotUI
-       
+
 
         //제대로 쓸려면 데이터를 집어넣어줘야될듯한데
         //따로 함수들을 뽑아버림
         //몇가지 기능 체크후 스왑기능 구현하자
 
 
+        //20230224//슬롯베이스관련해서 메커니즘관련한 기능들을 완전히 분할시키자
+        //이상태로 해봣자 꼬여버린다
+
+        //무엇을 할것인가
+        //스킬슬롯간의 위치교환을 위한 슬롯기능
+        //스킬스택이라든가 스킬데이터는 스킬슬롯 UI에 존재함
+
+        //그럼 필요한것은 스킬슬롯간의 위치교환을 위한 슬롯베이스 기능인데
+        //뭉터기로 되있음//그렇다고 너무분할시켜봣자 성능, 메모리 둘다 안좋음
+        //기능부분만 따로 빼버리자
+        //그럼 어디부분에서 문제인가하면 objectDescription부분에서 데이터설정관련된부분이 문제이다
+        //해당부분은 데이터세팅, 데이터세팅으로인한 SlotCount부분
+        //교환부분은 문제가 없다.//교환부분만 따로 빼버리는게 맞다
+
+        //SlotUICard => 기존의 시스템을 그대로 두고 가버리기
+        //SlotUICard_Base => 교환부분 메커니즘만 가져가기
+
+        //그럼 UI가 변동된거까지는 완료인데//슬롯카드에있는 데이터가 변동이 안됫을뿐
+        //변동할필요가 없지..?//는 이미지를 보여줘야해서 변동관련 필요함
 
 
-        private SkillSlotUI targetSkillSlotUI;//타겟이될 스킬슬롯UI//양방향성을 가짐//조심히 쓸것
+        private SkillSlotUI targetSkillSlotUI;//타겟이될 스킬슬롯UI//해당UI와 SkillSlot의 데이터를 가져와서 뿌리기
 
         protected override void Awake()
         {
@@ -45,6 +64,8 @@ namespace lLCroweTool.TimerSystem
             InitSlot(this);
             isUseDragSlotAddOnActionFunc = true;
             slotType = SlotType.SkillSlotUI;
+
+            targetSkillSlotUI = GetComponent<SkillSlotUI>();
         }
 
         /// <summary>
@@ -80,11 +101,26 @@ namespace lLCroweTool.TimerSystem
 
         protected override void OnDropCurSlotAddOnActionFunc()
         {
-            SkillSlot tempSkillSlot = skillSlot;
-            int tempIndex = GetButtonIndex();
+            //테스트좀 해봐야알겠음
+            //SkillSlot tempSkillSlot = skillSlot;
+            //int tempIndex = GetButtonIndex();
+            //슬롯을 스왑
+            SkillSlotUICard skillSlotUICardA = DragSlotUICard.Instance.GetDragComponent() as SkillSlotUICard;
+            SkillSlotUICard skillSlotUICardB = this;
 
-            SetSkillSlotUI(PlayerSkillToolBarUIView.Instance.GetDragSkillSlotUI().GetSkillSlot(), PlayerSkillToolBarUIView.Instance.GetDragSkillSlotUI().GetButtonIndex());
-            PlayerSkillToolBarUIView.Instance.GetDragSkillSlotUI().SetSkillSlotUI(tempSkillSlot, tempIndex);
+            //스킬슬롯UI내용물인 스킬슬롯을 변경//변경한 스킬슬롯을 스킬슬롯UI에 적용
+            SkillSlotUI.SwapSkillSlotUI(skillSlotUICardA.targetSkillSlotUI, skillSlotUICardB.targetSkillSlotUI);
+
+
+
+            //스킬슬롯UICard 데이터 재세팅
+            
+
+
+
+            //여긴데이터세팅//확인하고 지우기
+            //SetSkillSlotUI(PlayerSkillToolBarUIView.Instance.GetDragSkillSlotUI().GetSkillSlot(), PlayerSkillToolBarUIView.Instance.GetDragSkillSlotUI().GetButtonIndex());
+            //PlayerSkillToolBarUIView.Instance.GetDragSkillSlotUI().SetSkillSlotUI(tempSkillSlot, tempIndex);
         }
 
 
@@ -118,7 +154,7 @@ namespace lLCroweTool.TimerSystem
         protected override void OnPointerEnterActionFunc()
         {
             //스킬데이터가 비어있지않으면
-            if (!isExistSkillSlot && slotData == null)
+            if (targetSkillSlotUI.GetIsExistSkillSlot() == false && slotData == null)
             {
                 return;
             }
@@ -131,7 +167,7 @@ namespace lLCroweTool.TimerSystem
         }
         protected override void OnPointerExitActionFunc()
         {
-            if (!isExistSkillSlot)
+            if (targetSkillSlotUI.GetIsExistSkillSlot() == false)
             {
                 return;
             }
