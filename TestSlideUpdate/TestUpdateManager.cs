@@ -3,6 +3,7 @@ using lLCroweTool.Singleton;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.AI;
 
 public class TestUpdateManager : MonoBehaviourSingleton<TestUpdateManager>
 {
@@ -27,14 +28,33 @@ public class TestUpdateManager : MonoBehaviourSingleton<TestUpdateManager>
     [System.Serializable]
     public class UpdateScheduler
     {
-        public List<TestUpdateTarget_Base> testUpdateTargetList = new List<TestUpdateTarget_Base> ();
+        private List<TestUpdateTarget_Base> testUpdateTargetList = new List<TestUpdateTarget_Base> ();
+        private TestUpdateTarget_Base[] testUpdateTargetArray = new TestUpdateTarget_Base[0];
+
         public float totalDeltaTime = 0;
+
+        public TestUpdateTarget_Base[] TestUpdateTargetArray
+        {
+            get => testUpdateTargetArray;
+        }
+
+        public void Add(TestUpdateTarget_Base target)
+        {
+            testUpdateTargetList.Add (target);
+            testUpdateTargetArray = testUpdateTargetList.ToArray();
+        }
+        public void Remove(TestUpdateTarget_Base target)
+        {
+            testUpdateTargetList.Remove(target);
+            testUpdateTargetArray = testUpdateTargetList.ToArray();
+        }
+
     }
 
     private static bool checkInit = false;
     [Min(0)]public int initUpdateSchedulerAmount = 2;
 
-    public List<UpdateScheduler> updateSchedulerList = new List<UpdateScheduler> ();//=>나중에 배열로 옮겨주기
+    public UpdateScheduler[] updateSchedulerArray = new UpdateScheduler[0];//=>나중에 배열로 옮겨주기
     public int addCheckIndex = 0;
     public int updateIndex = 0;
 
@@ -50,10 +70,12 @@ public class TestUpdateManager : MonoBehaviourSingleton<TestUpdateManager>
         {
             return;
         }
+
+        updateSchedulerArray = new UpdateScheduler[initUpdateSchedulerAmount];
         for (int i = 0; i < initUpdateSchedulerAmount; i++)
         {
             UpdateScheduler updateScheduler = new UpdateScheduler();
-            updateSchedulerList.Add(updateScheduler);
+            updateSchedulerArray[i] = updateScheduler;
         }
         checkInit = true;
     }
@@ -61,15 +83,15 @@ public class TestUpdateManager : MonoBehaviourSingleton<TestUpdateManager>
     public void AddTestUpdateTarget(TestUpdateTarget_Base testUpdateTarget)
     {
         InitManager();
-        updateSchedulerList[addCheckIndex].testUpdateTargetList.Add (testUpdateTarget);
+        updateSchedulerArray[addCheckIndex].Add (testUpdateTarget);
         testUpdateTarget.updateOrderIndex = addCheckIndex;//갱신시키기
-        addCheckIndex = CheckLimit(addCheckIndex, updateSchedulerList.Count);
+        addCheckIndex = CheckLimit(addCheckIndex, updateSchedulerArray.Length);
     }
 
     public void RemoveTestUpdateTarget(TestUpdateTarget_Base testUpdateTarget)
     {
         InitManager();
-        updateSchedulerList[testUpdateTarget.updateOrderIndex].testUpdateTargetList.Remove(testUpdateTarget);
+        updateSchedulerArray[testUpdateTarget.updateOrderIndex].Remove(testUpdateTarget);
     }
     private static int CheckLimit(int curIndex, int limitIndex)
     {
@@ -77,30 +99,30 @@ public class TestUpdateManager : MonoBehaviourSingleton<TestUpdateManager>
         return curIndex;
     }
 
+    private int i = 0;
     private void Update()
     {
         //델타타임갱신
-        int i = 0;
         float deltaTime = Time.deltaTime;
-        for (i = 0; i < updateSchedulerList.Count; i++)
+        for (i = 0; i < updateSchedulerArray.Length; i++)
         {
-            updateSchedulerList[i].totalDeltaTime += deltaTime;
+            updateSchedulerArray[i].totalDeltaTime += deltaTime;
         }
 
         //초기세팅 가져옴
-        UpdateScheduler updateScheduler = updateSchedulerList[updateIndex];
-        deltaTime = updateScheduler.totalDeltaTime;
+        UpdateScheduler updateScheduler = updateSchedulerArray[updateIndex];
+        float totalDeltaTime = updateScheduler.totalDeltaTime;
         updateScheduler.totalDeltaTime = 0;
-        List<TestUpdateTarget_Base> updateTargetList = updateScheduler.testUpdateTargetList;
+        TestUpdateTarget_Base[] updateTargetArray = updateScheduler.TestUpdateTargetArray;
 
         //업데이트시작
-        for (i = 0; i < updateTargetList.Count; i++)
+        for (i = 0; i < updateTargetArray.Length; i++)
         {
-            updateTargetList[i].ActionUpdate(deltaTime);
+            updateTargetArray[i].ActionUpdate(totalDeltaTime);
         }
 
         //인덱스 체크
-        updateIndex = CheckLimit(updateIndex, updateSchedulerList.Count);
+        updateIndex = CheckLimit(updateIndex, updateSchedulerArray.Length);
     }
 
 }
