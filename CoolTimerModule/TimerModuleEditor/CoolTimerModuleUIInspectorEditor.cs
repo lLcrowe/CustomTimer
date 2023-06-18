@@ -8,21 +8,22 @@ using UnityEditor;
 namespace lLCroweTool.QC.EditorOnly
 {
     [CustomEditor(typeof(CoolTimerModuleUI))]
-    public class CoolTimerModuleUIInspectorEditor : SlotUICardInspecterEditor
+    public class CoolTimerModuleUIInspectorEditor : CustomDataInspecterEditor<CoolTimerModuleUI>
     {
         //쿨타이머필UI
         //쿨타이머반복아이콘
         private CoolTimerModuleUI coolTimerModuleUI;
 
+        
+
         protected override void InitAddFunc()
-        {
-            base.InitAddFunc();
+        {   
             coolTimerModuleUI = (CoolTimerModuleUI)target;
         }
 
         protected override bool CheckAutoGenerate(ref string content)
         {
-            bool isCheck = base.CheckAutoGenerate(ref content);
+            bool isCheck = false;
 
             content += "-=CoolTimerModuleUI 필요사항=-\n";
 
@@ -47,7 +48,6 @@ namespace lLCroweTool.QC.EditorOnly
 
         protected override void AutoGenerateSection()
         {
-            base.AutoGenerateSection();
             coolTimerModuleUI.gameObject.name = "CoolTimerModuleUI";
 
             GameObject gameObject = null;
@@ -79,7 +79,7 @@ namespace lLCroweTool.QC.EditorOnly
 
         protected override void DisplaySection()
         {
-            base.DisplaySection();
+            
         }
     }
 }
