@@ -57,10 +57,10 @@ public class TestUpdateManager : MonoBehaviourSingleton<TestUpdateManager>
     public UpdateScheduler[] updateSchedulerArray = new UpdateScheduler[0];//=>나중에 배열로 옮겨주기
     public int addCheckIndex = 0;
     public int updateIndex = 0;
+       
 
-    protected override void Awake()
+    protected override void Init()
     {
-        base.Awake();
         InitManager();
     }
 
