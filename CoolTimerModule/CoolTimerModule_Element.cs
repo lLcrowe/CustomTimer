@@ -37,7 +37,7 @@ namespace lLCroweTool.TimerSystem
         /// 쿨타이머모듈에서 쓰는 업데이트
         /// </summary>
         /// <param name="coolTimerModule">타겟이 될 쿨타이머모듈</param>
-        public static void UpdateCoolTimer(CoolTimerModule_Element coolTimerModule)
+        public static void UpdateCoolTimer(this CoolTimerModule_Element coolTimerModule)
         {
             if (!coolTimerModule.enabled)
             {
