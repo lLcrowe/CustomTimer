@@ -10,6 +10,10 @@ namespace lLCroweTool.TimerSystem
         //20221116
         //구조변경//통합완료
 
+        //20231114
+        //구조한번보니 더개선하기
+        //Connect관련 구지 저런곳에서 해야될까?
+
         public TimerModule_Element timerModule_Element;
 
         /// <summary>

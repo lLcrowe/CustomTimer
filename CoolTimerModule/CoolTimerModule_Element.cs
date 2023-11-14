@@ -45,6 +45,7 @@ namespace lLCroweTool.TimerSystem
             }
 
             //스킬(종합) 업데이트 //프레임또는 일정시간마다 호출//스킬시간 업데이트
+            //20231114이거 맞나? 확인좀 해봐야됨//뭔가 이상한데 일단 나중에
             coolTimerModule.SetTimeValue(coolTimerModule.GetTimeValue() + 1 / coolTimerModule.skillCoolTime * (Time.time - coolTimerModule.GetTime()));//작동됨 작동잘됨          
             if (coolTimerModule.GetTimeValue() > 1)
             {
@@ -132,6 +133,15 @@ namespace lLCroweTool.TimerSystem
         }
 
         /// <summary>
+        /// 모든이벤트 리셋
+        /// </summary>
+        public void ResetAllEvent()
+        {
+            SkillActionEvent.RemoveAllListeners();
+            readyToCoolEvent.RemoveAllListeners();
+        }
+
+        /// <summary>
         /// 스킬쿨타임의 활성화여부 가져오기
         /// </summary>
         /// <returns>스킬을 사용할수 있는지 여부</returns>
@@ -159,6 +169,11 @@ namespace lLCroweTool.TimerSystem
         {
             return timeValue;
         }
+
+        /// <summary>
+        /// 현재 돌아가는 타임을 세팅하는 함수
+        /// </summary>
+        /// <param name="_value">0~1사이 값</param>
         public void SetTimeValue(float _value)
         {
             timeValue = _value;
