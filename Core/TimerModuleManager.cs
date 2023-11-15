@@ -61,8 +61,9 @@ namespace lLCroweTool.TimerSystem
 
         //코루틴모듈//MEC로 처리하는중//중앙에서 체크하여 작동됫는지 확인용도//작동은 다른곳에서 됨
         public List<TimerModule_Base> coroutineTimerModuleList = new List<TimerModule_Base>();
-
-        //private CoroutineHandle updateHandle;
+#if MEC
+        private CoroutineHandle updateHandle;
+#endif
         private static float timerValue;
 
         protected override void Init()
@@ -272,19 +273,19 @@ namespace lLCroweTool.TimerSystem
 
 #if MEC
 
-        ///// <summary>
-        ///// MEC로 호출하는 업데이트 함수//MEC
-        ///// </summary>
-        //private IEnumerator<float> UpdateTimerModuleFunc()//MEC
-        //{
-        //    //유니티 업데이트 대신 돌리기 위한 구역
-        //    //테스트
-        //    for (; ; )
-        //    {
-        //        UpdateTimerModuleManager();
-        //        yield return Timing.WaitForOneFrame;
-        //    }
-        //}
+        /// <summary>
+        /// MEC로 호출하는 업데이트 함수//MEC
+        /// </summary>
+        private IEnumerator<float> UpdateTimerModuleFunc()//MEC
+        {
+            //유니티 업데이트 대신 돌리기 위한 구역
+            //테스트
+            for (; ; )
+            {
+                UpdateTimerModuleManager();
+                yield return Timing.WaitForOneFrame;
+            }
+        }
 
         /// <summary>
         /// 타이머모듈들을 공통로직 함수(모노코루틴용)//MEC

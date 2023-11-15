@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace lLCroweTool.TimerSystem
 {
@@ -13,6 +12,7 @@ namespace lLCroweTool.TimerSystem
         //20231114
         //구조한번보니 더개선하기
         //Connect관련 구지 저런곳에서 해야될까?
+        //확인해보니 그럴만한 이유가 있음//그대로 두기
 
         public TimerModule_Element timerModule_Element;
 
