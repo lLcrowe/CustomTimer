@@ -26,7 +26,7 @@ public class TestUpdateManager : MonoBehaviourSingleton<TestUpdateManager>
 
 
     [System.Serializable]
-    public class UpdateScheduler
+    public class UpdateSchedulerData
     {
         private List<TestUpdateTarget_Base> testUpdateTargetList = new List<TestUpdateTarget_Base> ();
         private TestUpdateTarget_Base[] testUpdateTargetArray = new TestUpdateTarget_Base[0];
@@ -54,7 +54,8 @@ public class TestUpdateManager : MonoBehaviourSingleton<TestUpdateManager>
     private static bool checkInit = false;
     [Min(0)]public int initUpdateSchedulerAmount = 2;
 
-    public UpdateScheduler[] updateSchedulerArray = new UpdateScheduler[0];//=>나중에 배열로 옮겨주기
+    public bool isFixedUpdate = false;
+    public UpdateSchedulerData[] updateSchedulerArray = new UpdateSchedulerData[0];//=>나중에 배열로 옮겨주기
     public int addCheckIndex = 0;
     public int updateIndex = 0;
        
@@ -71,10 +72,10 @@ public class TestUpdateManager : MonoBehaviourSingleton<TestUpdateManager>
             return;
         }
 
-        updateSchedulerArray = new UpdateScheduler[initUpdateSchedulerAmount];
+        updateSchedulerArray = new UpdateSchedulerData[initUpdateSchedulerAmount];
         for (int i = 0; i < initUpdateSchedulerAmount; i++)
         {
-            UpdateScheduler updateScheduler = new UpdateScheduler();
+            UpdateSchedulerData updateScheduler = new UpdateSchedulerData();
             updateSchedulerArray[i] = updateScheduler;
         }
         checkInit = true;
@@ -102,15 +103,33 @@ public class TestUpdateManager : MonoBehaviourSingleton<TestUpdateManager>
     private int i = 0;
     private void Update()
     {
+        if (isFixedUpdate)
+        {
+            return;
+        }
+        UpdateScheduler();
+    }
+
+    private void FixedUpdate()
+    {
+        if (!isFixedUpdate)
+        {
+            return;
+        }
+        UpdateScheduler();
+    }
+
+    private void UpdateScheduler()
+    {
         //델타타임갱신
-        float deltaTime = Time.deltaTime;
+        float deltaTime = isFixedUpdate ? Time.fixedDeltaTime : Time.deltaTime;
         for (i = 0; i < updateSchedulerArray.Length; i++)
         {
             updateSchedulerArray[i].totalDeltaTime += deltaTime;
         }
 
         //초기세팅 가져옴
-        UpdateScheduler updateScheduler = updateSchedulerArray[updateIndex];
+        UpdateSchedulerData updateScheduler = updateSchedulerArray[updateIndex];
         float totalDeltaTime = updateScheduler.totalDeltaTime;
         updateScheduler.totalDeltaTime = 0;
         TestUpdateTarget_Base[] updateTargetArray = updateScheduler.TestUpdateTargetArray;
@@ -124,5 +143,4 @@ public class TestUpdateManager : MonoBehaviourSingleton<TestUpdateManager>
         //인덱스 체크
         updateIndex = CheckLimit(updateIndex, updateSchedulerArray.Length);
     }
-
 }
