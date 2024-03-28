@@ -64,7 +64,7 @@ namespace lLCroweTool.TimerSystem
 #if MEC
         private CoroutineHandle updateHandle;
 #endif
-        private static float timerValue;
+       
 
         protected override void Init()
         {
@@ -241,9 +241,15 @@ namespace lLCroweTool.TimerSystem
 
         private void UpdateTimerModuleManager()
         {
+            if (isPause)
+            {
+                return;
+            }
+
             //업데이트 타이머모듈베이스(모노비헤이비어)
-            Profiler.BeginSample("UpdateTimerModule");
+            //Profiler.BeginSample("UpdateTimerModule");
             TimerModule_Base timerModule_Base = null;
+
             for (int i = 0; i < updateTimerModuleBaseArray.Length; i++)
             {
                 timerModule_Base = updateTimerModuleBaseArray[i];
@@ -254,7 +260,7 @@ namespace lLCroweTool.TimerSystem
                 }
 
                 //시간체크
-                if (!CheckTimer(timerModule_Base.timerModule_Element))
+                if (!timerModule_Base.timerModule_Element.CheckTimer(ref timerScale))
                 {
                     continue;
                 }
@@ -262,7 +268,7 @@ namespace lLCroweTool.TimerSystem
                 timerModule_Base.UpdateTimerModuleFunc();//이벤트작동
                 timerModule_Base.ResetTime();//타이머시간 리셋
             }
-            Profiler.EndSample();
+            //Profiler.EndSample();
         }
 
         private void Update()
@@ -338,41 +344,6 @@ namespace lLCroweTool.TimerSystem
             }
         }
 #endif
-
-        /// <summary>
-        /// 작동할 시간이 됫는지 체크해주는 함수
-        /// </summary>
-        ///<param name="timerModule_Element">타이머모듈_요소</param>
-        /// <returns>작동할 시간이 됫는지 여부</returns>
-        public bool CheckTimer(TimerModule_Element timerModule_Element)
-        {
-            //20221113제작//공통로직 합동
-            //20221114테스트진행 GC문제있음
-            //202216문제는 Action같은 Delegate문제. 여긴상관없음
-            //20230220데이터부분을 분리
-            if (isPause)
-            {
-                return false;
-            }
-
-            timerValue = CalTimerValue(timerModule_Element.GetTimer(), timerModule_Element.GetTime(), timerModule_Element.indieTimer, GetUpdateTimerScale());
-
-            return Time.time > timerValue;
-        }
-
-        /// <summary>
-        /// 타임밸류를 계산해주는 함수
-        /// </summary>
-        /// <param name="timer">지정된 타이머</param>
-        /// <param name="time">저장된 시간</param>
-        /// <param name="indieTimer">독립된 타이머여부</param>
-        /// <param name="timerScale">시간 스케일</param>
-        /// <returns>계산된 타임밸류</returns>
-        private static float CalTimerValue(float timer, float time, bool indieTimer, float timerScale)
-        {
-            float tempValue = indieTimer ? timer + time : (timer * timerScale) + time;
-            return tempValue;
-        }
 
         protected override void OnDestroy()
         {

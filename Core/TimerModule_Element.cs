@@ -20,6 +20,8 @@ namespace lLCroweTool.TimerSystem
         //기존의 돌아가는 타이머
         private float time;
 
+        //4,2,4,4
+
         public TimerModule_Element(float timer, bool indieTimer = false)
         {
             this.timer = timer;
@@ -34,12 +36,56 @@ namespace lLCroweTool.TimerSystem
         public bool CheckTimer()
         {
             //시간체크
-            bool check = TimerModuleManager.Instance.CheckTimer(this);//작동할시간이 됫는지 여부
+            bool check = CheckTimer(ref this);//작동할시간이 됫는지 여부
             if (check)
             {
                 ResetTime();//타이머시간 리셋
             }
             return check;
+        }
+
+        private static float timerValue;
+        /// <summary>
+        /// 작동할 시간이 됫는지 체크해주는 함수(TimerModule_Element용)
+        /// </summary>
+        ///<param name="timerModule_Element">타이머모듈_요소</param>
+        /// <returns>작동할 시간이 됫는지 여부</returns>
+        private static bool CheckTimer(ref TimerModule_Element timerModule_Element)
+        {
+            //20221113제작//공통로직 합동
+            //20221114테스트진행 GC문제있음
+            //202216문제는 Action같은 Delegate문제. 여긴상관없음
+            //20230220데이터부분을 분리
+            //20240328Pause부분을 중앙에서 관리하는대상에게로만 변경
+
+            timerValue = CalTimerValue(timerModule_Element.GetTimer(), timerModule_Element.GetTime(), timerModule_Element.indieTimer, 1);
+            return Time.time > timerValue;
+        }
+
+        /// <summary>
+        /// 작동할 시간이 됫는지 체크해주는 함수(TimerModule_Base용)
+        /// </summary>
+        ///<param name="timerModule_Element">타이머모듈_요소</param>
+        ///<param name="scale">시간스케일값</param>
+        /// <returns>작동할 시간이 됫는지 여부</returns>
+        public bool CheckTimer(ref float scale)
+        {   
+            timerValue = CalTimerValue(timer, time, indieTimer, scale);
+            return Time.time > timerValue;
+        }
+
+        /// <summary>
+        /// 타임밸류를 계산해주는 함수
+        /// </summary>
+        /// <param name="timer">지정된 타이머</param>
+        /// <param name="time">저장된 시간</param>
+        /// <param name="indieTimer">독립된 타이머여부</param>
+        /// <param name="timerScale">시간 스케일</param>
+        /// <returns>계산된 타임밸류</returns>
+        private static float CalTimerValue(float timer, float time, bool indieTimer, float timerScale)
+        {
+            float tempValue = indieTimer ? timer + time : (timer * timerScale) + time;
+            return tempValue;
         }
 
         /// <summary>
