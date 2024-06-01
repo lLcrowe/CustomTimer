@@ -5,8 +5,11 @@
     /// </summary>
     public struct TimerModule_Element_Action
     {
-        public TimerModule_Element timerModule;
+        private TimerModule_Element timerModule;
+
         public System.Action action;
+
+        public TimerModule_Element TimerModule { get => timerModule; }
 
         public void UpdateTimerModule()
         {
