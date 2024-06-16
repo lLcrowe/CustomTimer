@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using lLCroweTool.Singleton;
 #if MEC
 using MEC;
 #endif
 //using lLCroweTool.LogSystem;
-using lLCroweTool.Singleton;
-using UnityEngine.Profiling;
+//using UnityEngine.Profiling;
 
 namespace lLCroweTool.TimerSystem
 {

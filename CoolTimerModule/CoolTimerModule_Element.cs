@@ -9,8 +9,8 @@ namespace lLCroweTool.TimerSystem
         //이벤트관련
         private bool enabled = false;//업데이트여부
         private bool enableSkill = true;//스킬활성화여부
-        public UnityEvent SkillActionEvent;//작동시켯을 때 이벤트
-        public UnityEvent readyToCoolEvent;//쿨타임이 완료되었을때 이벤트
+        public UnityEvent SkillActionEvent = new();//작동시켯을 때 이벤트
+        public UnityEvent readyToCoolEvent = new();//쿨타임이 완료되었을때 이벤트
 
         //반복관련
         public bool isUseRepeat = false;//우클릭작동불가쪽
@@ -23,8 +23,8 @@ namespace lLCroweTool.TimerSystem
         public CoolTimerModule_Element()
         {
             enableSkill = true;
-            lLcroweUtil.GetAddUnitEvent(ref SkillActionEvent);
-            lLcroweUtil.GetAddUnitEvent(ref readyToCoolEvent);
+            //lLcroweUtil.GetAddUnitEvent(ref SkillActionEvent);
+            //lLcroweUtil.GetAddUnitEvent(ref readyToCoolEvent);
         }
 
         ~CoolTimerModule_Element()
