@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using lLCroweTool.Singleton;
+using System.Collections;
 #if MEC
 using MEC;
 #endif
@@ -355,6 +356,38 @@ namespace lLCroweTool.TimerSystem
 
     //업데이트와 코루틴을 같이 작업하지않기떄문에 분리 해놈
     //중앙에서 볼수 있게
+
+    public static class TimerModuleExtendClass
+    {
+
+        public static void ActionAndDisable(this MonoBehaviour monoBehaviour, float timer)
+        {
+            monoBehaviour.StartCoroutine(ActionAndDisableCoroutine(monoBehaviour, timer));
+        }
+
+
+        private static IEnumerator ActionAndDisableCoroutine(Component component, float timer)
+        {
+            //시간체크
+            TimerModule_Element timerModule = new TimerModule_Element(timer);
+            timerModule.ResetTime();
+            do
+            {
+                yield return null;
+                if (timerModule.CheckTimer())
+                {
+                    break;
+                }
+            } while (true);
+
+            //비활성화
+            component.gameObject.SetActive(false);
+        }
+    }
+
+
+
+
 
     /// <summary>
     /// 타이머모듈(모노) 타입
