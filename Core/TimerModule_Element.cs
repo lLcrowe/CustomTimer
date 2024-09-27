@@ -22,7 +22,7 @@ namespace lLCroweTool.TimerSystem
 
         //4,2,4,4
 
-        public TimerModule_Element(float timer, bool indieTimer = false)
+        public TimerModule_Element(in float timer, in bool indieTimer = false)
         {
             this.timer = timer;
             this.indieTimer = indieTimer;
@@ -36,7 +36,7 @@ namespace lLCroweTool.TimerSystem
         public bool CheckTimer()
         {
             //시간체크
-            bool check = CheckTimer(ref this);//작동할시간이 됫는지 여부
+            bool check = CheckTimer(this);//작동할시간이 됫는지 여부
             if (check)
             {
                 ResetTime();//타이머시간 리셋
@@ -50,7 +50,7 @@ namespace lLCroweTool.TimerSystem
         /// </summary>
         ///<param name="timerModule_Element">타이머모듈_요소</param>
         /// <returns>작동할 시간이 됫는지 여부</returns>
-        private static bool CheckTimer(ref TimerModule_Element timerModule_Element)
+        private static bool CheckTimer(in TimerModule_Element timerModule_Element)
         {
             //20221113제작//공통로직 합동
             //20221114테스트진행 GC문제있음
@@ -68,7 +68,7 @@ namespace lLCroweTool.TimerSystem
         ///<param name="timerModule_Element">타이머모듈_요소</param>
         ///<param name="scale">시간스케일값</param>
         /// <returns>작동할 시간이 됫는지 여부</returns>
-        public bool CheckTimer(ref float scale)
+        public bool CheckTimer(in float scale)
         {   
             timerValue = CalTimerValue(timer, time, indieTimer, scale);
             return Time.time > timerValue;
@@ -82,7 +82,7 @@ namespace lLCroweTool.TimerSystem
         /// <param name="indieTimer">독립된 타이머여부</param>
         /// <param name="timerScale">시간 스케일</param>
         /// <returns>계산된 타임밸류</returns>
-        private static float CalTimerValue(float timer, float time, bool indieTimer, float timerScale)
+        private static float CalTimerValue(in float timer, in float time, in bool indieTimer, in float timerScale)
         {
             float tempValue = indieTimer ? timer + time : (timer * timerScale) + time;
             return tempValue;
@@ -92,7 +92,7 @@ namespace lLCroweTool.TimerSystem
         /// 타이머 세팅(시간초)
         /// </summary>
         /// <param name="value">시간</param>
-        public void SetTimer(float value)
+        public void SetTimer(in float value)
         {
             timer = value;
         }

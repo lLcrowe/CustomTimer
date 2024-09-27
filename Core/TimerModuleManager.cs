@@ -261,7 +261,7 @@ namespace lLCroweTool.TimerSystem
                 }
 
                 //시간체크
-                if (!timerModule_Base.timerModule_Element.CheckTimer(ref timerScale))
+                if (!timerModule_Base.timerModule_Element.CheckTimer(timerScale))
                 {
                     continue;
                 }
