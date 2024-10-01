@@ -272,13 +272,16 @@ namespace lLCroweTool.TimerSystem
             //Profiler.EndSample();
         }
 
+
+
+#if !MEC
+
         private void Update()
         {
             //유니티업데이트
             UpdateTimerModuleManager();
         }
-
-#if MEC
+#else
 
         /// <summary>
         /// MEC로 호출하는 업데이트 함수//MEC

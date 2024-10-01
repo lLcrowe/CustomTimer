@@ -10,7 +10,7 @@ namespace lLCroweTool.TimerSystem
     public struct DelayModule_Element
     {
         [Min(0)] public float delayTimer;
-        private static float time = 0;
+        private float time;
 
         /// <summary>
         /// 지연모듈의 타이머체크
