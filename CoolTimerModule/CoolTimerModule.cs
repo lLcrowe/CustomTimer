@@ -1,4 +1,6 @@
-﻿namespace lLCroweTool.TimerSystem
+﻿using UnityEngine;
+
+namespace lLCroweTool.TimerSystem
 {
     //[RequireComponent(typeof(UpdateTimerModule))]//20221021필요없게 변함
     public class CoolTimerModule : UpdateTimerModule_Base
@@ -12,7 +14,12 @@
         //그냥 아무곳이나 집어넣고 참조만할수 있게한느거 좋을거 같음
         //private UpdateNonUnityEventTimerModule timerModule;//타이머모듈
 
-        public CoolTimerModule_Element coolTimerModule = new CoolTimerModule_Element();
+        [SerializeField] private CoolTimerModule_Element coolTimerModule = new CoolTimerModule_Element();
+
+        /// <summary>
+        /// 쿨타이머가져오기
+        /// </summary>
+        public CoolTimerModule_Element CoolTimer { get => coolTimerModule; }
 
         protected override void Awake()
         {
