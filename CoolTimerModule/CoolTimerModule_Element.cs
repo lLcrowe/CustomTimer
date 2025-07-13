@@ -3,6 +3,10 @@ using UnityEngine.Events;
 
 namespace lLCroweTool.TimerSystem
 {
+    /// <summary>
+    /// 쿨타이머모듈 
+    /// struct로 변경시 귀찮은게 많아짐
+    /// </summary>
     [System.Serializable]
     public class CoolTimerModule_Element
     {
@@ -32,6 +36,22 @@ namespace lLCroweTool.TimerSystem
             SkillActionEvent = null;
             readyToCoolEvent = null;
         }
+
+        //public void Init()
+        //{
+        //    //이벤트관련
+        //    enabled = false;//업데이트여부
+        //    enableSkill = true;//스킬활성화여부
+        //    SkillActionEvent = new();//작동시켯을 때 이벤트
+        //    readyToCoolEvent = new();//쿨타임이 완료되었을때 이벤트
+
+        //    //반복관련
+        //    isUseRepeat = false;//우클릭작동불가쪽
+        //    isRepeat = false;//반복하는중인가
+        //    skillCoolTime = 3f;//스킬쿨타임 시간
+        //    timeValue = 0;//쿨타임용
+        //    time = -1;
+        //}
 
         /// <summary>
         /// 쿨타이머모듈에서 쓰는 업데이트

@@ -65,7 +65,10 @@ namespace lLCroweTool.TimerSystem
 #if MEC
         private CoroutineHandle updateHandle;
 #endif
-       
+
+
+        [Header("코루틴")]
+        public List<string> activeCoroutineName = new List<string>(100);
 
         protected override void Init()
         {
@@ -349,6 +352,44 @@ namespace lLCroweTool.TimerSystem
         }
 #endif
 
+        //코루틴작업용
+
+        /// <summary>
+        /// 특정 코루틴작업을 매니저에서 대신 돌려주는 함수
+        /// </summary>
+        /// <param name="monoBehaviour">모노비헤이비어</param>
+        /// <param name="routine">코루틴</param>
+        public void ActionCoroutine(MonoBehaviour monoBehaviour, in IEnumerator routine)
+        {
+            if (!Application.isPlaying)
+            {
+                monoBehaviour.StopAllCoroutines();
+                return;
+            }
+
+            if (!gameObject.activeInHierarchy)
+            {
+                return;
+            }
+
+            monoBehaviour.StartCoroutine(InternalCoroutine(monoBehaviour, routine));
+        }
+
+        /// <summary>
+        /// 내부에서 돌아가는 코루틴함수
+        /// </summary>
+        /// <param name="monoBehaviour">모노비헤이비어</param>
+        /// <param name="routine">코루틴</param>
+        /// <returns></returns>
+        private IEnumerator InternalCoroutine(MonoBehaviour monoBehaviour, IEnumerator routine)
+        {
+            string content = $"{monoBehaviour.name}_Anim_{activeCoroutineName.Count}";
+            //Debug.Log(content);
+            activeCoroutineName.Add(content);
+            yield return StartCoroutine(routine);
+            activeCoroutineName.Remove(content);
+        }
+
         protected override void OnDestroy()
         {
             base.OnDestroy();
@@ -386,7 +427,10 @@ namespace lLCroweTool.TimerSystem
             //비활성화
             component.gameObject.SetActive(false);
         }
+
+     
     }
+
 
 
 

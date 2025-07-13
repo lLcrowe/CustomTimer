@@ -92,10 +92,19 @@ namespace lLCroweTool.TimerSystem
         /// <summary>
         /// 쿨타이머내용을 보여주기 위해 쿨타이머UI에 세팅해주는 함수
         /// </summary>
-        /// <param name="_coolTimerModule">타겟이 될 쿨타이머 모듈</param>
-        public void SetCoolTimerModuleUI(CoolTimerModule_Element _coolTimerModule)
+        /// <param name="coolTimerModule">타겟이 될 쿨타이머 모듈</param>
+        public void InitCoolTimerUI(CoolTimerModule coolTimerModule)
         {
-            targetCoolTimer = _coolTimerModule;
+            InitCoolTimerUI(coolTimerModule.CoolTimer);
+        }
+
+        /// <summary>
+        /// 쿨타이머내용을 보여주기 위해 쿨타이머UI에 세팅해주는 함수
+        /// </summary>
+        /// <param name="coolTimerModule">타겟이 될 쿨타이머 모듈</param>
+        public void InitCoolTimerUI(CoolTimerModule_Element coolTimerModule)
+        {
+            targetCoolTimer = coolTimerModule;
             if (ReferenceEquals(targetCoolTimer, null))
             {
                 isExistCoolTimer = false;

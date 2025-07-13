@@ -75,7 +75,7 @@ namespace lLCroweTool.TimerSystem
         }
 
         /// <summary>
-        /// 타임밸류를 계산해주는 함수
+        /// 지정된 시간을 계산해주는 함수
         /// </summary>
         /// <param name="timer">지정된 타이머</param>
         /// <param name="time">저장된 시간</param>
