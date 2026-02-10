@@ -1,0 +1,8 @@
+{
+    "name": "com.llcrowe.custom-timer",
+    "version": "1.0.0",
+    "displayName": "Custom Timer",
+    "description": "Timer module system with delay, cooldown, update timer and MEC coroutine extensions",
+    "unity": "6000.3",
+    "dependencies": {}
+}
